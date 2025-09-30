@@ -1,0 +1,122 @@
+services:
+  test-project-traefik:
+    image: traefik:v3.3.4
+    container_name: test-project-traefik
+    command:
+      --api.dashboard=true
+      --api.insecure=true
+      --providers.docker=true
+      --providers.docker.watch=true
+      --providers.docker.exposedByDefault=false
+      --entryPoints.http.address=:80
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    networks:
+      - test-project-network
+
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=test-project-network
+      - traefik.http.routers.traefik.rule=Host(`traefik.test-project.localhost`)
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.routers.traefik.entryPoints=http
+
+  test-project-front:
+    build:
+      context: ./docker
+      dockerfile: nginx/front/Dockerfile
+    container_name: test-project-front
+    volumes:
+      - ./:/app
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=test-project-network
+      - traefik.http.routers.front.rule=Host(`front.test-project.localhost`)
+      - traefik.http.routers.front.service=front
+      - traefik.http.routers.front.entryPoints=http
+      - traefik.http.services.front.loadBalancer.server.port=80
+    networks:
+      - test-project-network
+
+  node:
+    build:
+      context: ./docker
+      dockerfile: node/Dockerfile
+    container_name: test-project-node
+    volumes:
+     - ./:/app
+    networks:
+      - test-project-network
+
+  test-project-node:
+    build:
+      context: ./docker
+      dockerfile: nginx/node/Dockerfile
+    container_name: test-project-node
+    volumes:
+      - ./:/app
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=test-project-network
+      - traefik.http.routers.front.rule=Host(`node.test-project.localhost`)
+      - traefik.http.routers.front.service=front
+      - traefik.http.routers.front.entryPoints=http
+      - traefik.http.services.front.loadBalancer.server.port=80
+    networks:
+      - test-project-network
+  
+  test-project-admin:
+    build:
+      context: ./docker
+      dockerfile: nginx/admin/Dockerfile
+    container_name: test-project-admin
+    volumes:
+      - ./:/app
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=test-project-network
+      - traefik.http.routers.admin.rule=Host(`admin.test-project.localhost`)
+      - traefik.http.routers.admin.service=admin
+      - traefik.http.routers.admin.entryPoints=http
+      - traefik.http.services.admin.loadBalancer.server.port=80
+    networks:
+      - test-project-network
+
+  php:
+    build:
+      context: ./docker
+      dockerfile: php/Dockerfile
+    container_name: test-project-php
+    volumes:
+     - ./:/app
+    networks:
+      - test-project-network
+
+  # test-project-mariadb:
+  #   image: mariadb:11-8-rc
+  #   ports:
+  #     - "33118:3306"
+  #   container_name: test-project-mariadb
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: database
+  #     MYSQL_USER: user
+  #     MYSQL_PASSWORD: user
+  #   volumes:
+  #     - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+  #     - db_data:/var/lib/MYSQL_DATABASE
+  #   networks:
+  #     - test-project-network
+
+networks:
+  test-project-network:
+    driver: bridge
+
+volumes:
+  db_data:
