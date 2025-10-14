@@ -10,57 +10,66 @@
     <h2>Selection Sort</h2>
     <?php
         $arr = [5,3,1,6,8];
-        $n = count($arr);
+        $n = 5;
         print_r($arr);
         echo "<br>";
-        for ($i = 0; $i < $n; $i++) {
-            $minIndex = $i;
-            for ($j = $i+1; $j < $n; $j++) {
-                if ($arr[$j] < $arr[$minIndex])
-                    $minIndex = $j;
-                $k = $arr[$i];
-                $arr[$i] = $arr[$minIndex];
-                $arr[$minIndex] = $k;
+        function selectionSort(&$array, $n) {
+            for ($i = 0; $i < $n; $i++) {
+                $minIndex = $i;
+                for ($j = $i+1; $j < $n; $j++) {
+                    if ($array[$j] < $array[$minIndex])
+                        $minIndex = $j;
+                    $k = $array[$i];
+                    $array[$i] = $array[$minIndex];
+                    $array[$minIndex] = $k;
+                }
             }
         }
+        selectionSort($arr, $n);
         print_r($arr);
 
     ?>
     <h2>Bubble Sort</h2>
     <?php
         $arr = [5,3,1,6,8];
-        $n = count($arr);
+        $n = 5;
         print_r($arr);
         echo "<br>";
-        $swapped = true;
-        while ($swapped) {
-            $swapped = false;
-            for ($i = 0; $i < $n-1; $i++) {
-                if ($arr[$i] > $arr[$i+1]) {
-                    $k = $arr[$i];
-                    $arr[$i] = $arr[$i + 1];
-                    $arr[$i + 1] = $k;
-                    $swapped = true;
+        function bubbleSort(&$array, $n) {
+            $swapped = true;
+            while ($swapped) {
+                $swapped = false;
+                for ($i = 0; $i < $n-1; $i++) {
+                    if ($array[$i] > $array[$i+1]) {
+                        $k = $array[$i];
+                        $array[$i] = $array[$i + 1];
+                        $array[$i + 1] = $k;
+                        $swapped = true;
+                    }
                 }
             }
         }
+        bubbleSort($arr, $n);
         print_r($arr);
     ?>
     <h2>Insertion sort</h2>
     <?php
         $arr = [5,3,1,6,8];
-        $n = count($arr);
+        $n = 5;
         print_r($arr);
-        echo "<br>";
-        for ($i = 1; $i < $n; $i++) {
-            $key = $arr[$i];
-            $j = $i - 1;
-            while ($j >= 0 and $arr[$j] > $key) {
-                $arr[$j + 1] = $arr[$j];
-                $j = $j - 1;
+        function insertionSort(&$array, $n) {
+            for ($i = 1; $i < $n; $i++) {
+                $key = $array[$i];
+                $j = $i - 1;
+                while ($j >= 0 and $array[$j] > $key) {
+                    $array[$j + 1] = $array[$j];
+                    $j = $j - 1;
+                }
+                $array[$j + 1] = $key;
             }
-            $arr[$j + 1] = $key;
         }
+        echo "<br>";
+        insertionSort($arr, $n);
         print_r($arr);
     ?>
     <h2>Merge Sort</h2>
@@ -97,7 +106,8 @@
 
         $arr = [10, 5, 13, 5, 4, 65];
         print_r($arr);
-        $array = mergeSort($arr, 6);
+        echo "<br>";
+        $arr = mergeSort($arr, 6);
         print_r($arr);
 
     ?>  
@@ -129,12 +139,35 @@
             return $newArr;
         }
         
-        $array = quickSort($arr, $n);
+        $arr = quickSort($arr, $n);
+        echo "<br>";
         print_r($arr);
     ?>
     <h2>Shell Sort</h2>
     <?php
-        
+        $array = [61, 5, 4, 123, 67, 4, 1];
+        $n = 7;
+
+        function shellSort(&$arr, $n) {
+            $gap = $n;
+            while ($gap != 1) {
+                $gap = ($gap + ($gap % 2)) / 2;
+                for ($i = $gap; $i < $n; $i++) {
+                        $j = $i - $gap;
+                        while ($j >= 0 and $arr[$j] > $arr[$j + $gap]) {
+                                $buff = $arr[$j + $gap];
+                                $arr[$j + $gap] =  $arr[$j];
+                                $arr[$j] = $buff;
+                                $j--;
+                        }
+                    }
+            }
+        }
+
+        print_r($array);
+        echo "<br>";
+        shellSort($array, $n);
+        print_r($array);
     ?>
 </body>
 </html>
