@@ -9,6 +9,13 @@
     <h1>LAB 4</h1>
     <h2>Linear Search O(n)</h2>
     <?php 
+
+        function printArray($array) {
+            foreach($array as $elem) {
+                echo "| $elem ";
+            }
+            echo "|<br>";
+        }
         // O(n)
         $array = [6,4,1,4,5,1,4,123];
         $n = 8;
@@ -20,7 +27,7 @@
             }
             return -1;
         }
-        print_r($array);
+        printArray($array);
         echo "<br>";
         echo "Number 5 is at index " . linearSearch($array, $n, 5);
     ?>
@@ -46,7 +53,7 @@
             }
             return -1;
         }
-        print_r($array);
+        printArray($array);
         echo "<br>";
         echo "Number 6 is at index " . binarySearch($array, $n, 6);
     ?>
@@ -205,22 +212,30 @@
                 return NULL;
             }
             
-            public function printTries($subtrie=NULL, $spaces="") {
-                if (is_null($subtrie))
+            public function printTries($subtrie=0, $spaces="") {
+                if ($subtrie === 0)
                     $subtrie = $this->root;
                 foreach ($subtrie as $a => $v) {
-                    echo $spaces . "[" . $a . "]" . " => ";
+                    echo "<br>" . $spaces . "[" . $a . "]" . " => ";
                     if (!is_null($subtrie[$a]))
                         echo $subtrie[$a]->value;
-                    if (!is_null($subtrie[$a]) and !is_null($subtrie[$a]->next)) {
-                        echo "<br>";
+                    if (!is_null($subtrie[$a]) and !is_null($subtrie[$a]->next))
                         $this->printTries($subtrie[$a]->next, $spaces . "=====");
-                    }
-                    echo "<br>";
                 }
             }
-        }
-
+        }?>
+        <p><b>Inputs</b></p>
+        <p>hello</p>
+        <p>hi</p>
+        <p>hit</p>
+        <p>hel</p>
+        <p>hol</p>
+        <p>lol</p>
+        <p>hard</p>
+        <p>hardwork</p>
+        <p>hitcliff</p>
+        <p>hitclod</p>
+        <?php
         $hashTries = new HashTries();
         $hashTries->insert("hello");
         $hashTries->insert("hi");
@@ -233,6 +248,15 @@
         $hashTries->insert("hitcliff");
         $hashTries->insert("hitclod");
         $hashTries->printTries();
+
+        // $hashTries->printTries($hashTries->search("hard"));
+        echo "<br>";
+        ?>
+        <p>Searching "hard"</p>
+        <?php
+        $res = $hashTries->search("hard");
+        echo "$res->value<br>";
+        $hashTries->printTries($hashTries->search("hard")->next);
     ?>
 </body>
 </html>
