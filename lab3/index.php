@@ -7,12 +7,15 @@
 </head>
 <body>
     <h1>LAB 3</h1>
-    <h2>Selection Sort</h2>
+    <h2>Selection Sort O(n<sup>2</sup>)</h2>
     <?php
-        $arr = [5,3,1,6,8];
-        $n = 5;
-        print_r($arr);
-        echo "<br>";
+        function printArray($array) {
+            foreach($array as $elem) {
+                echo "| $elem ";
+            }
+            echo "|<br>";
+        }
+        
         function selectionSort(&$array, $n) {
             for ($i = 0; $i < $n; $i++) {
                 $minIndex = $i;
@@ -25,16 +28,17 @@
                 }
             }
         }
-        selectionSort($arr, $n);
-        print_r($arr);
 
-    ?>
-    <h2>Bubble Sort</h2>
-    <?php
         $arr = [5,3,1,6,8];
         $n = 5;
-        print_r($arr);
+        printArray($arr);
         echo "<br>";
+        selectionSort($arr, $n);
+        printArray($arr);
+
+    ?>
+    <h2>Bubble Sort O(n (n-1) /2)</h2>
+    <?php
         function bubbleSort(&$array, $n) {
             $swapped = true;
             while ($swapped) {
@@ -49,14 +53,15 @@
                 }
             }
         }
-        bubbleSort($arr, $n);
-        print_r($arr);
-    ?>
-    <h2>Insertion sort</h2>
-    <?php
         $arr = [5,3,1,6,8];
         $n = 5;
-        print_r($arr);
+        printArray($arr);
+        echo "<br>";
+        bubbleSort($arr, $n);
+        printArray($arr);
+    ?>
+    <h2>Insertion sort O(n<sup>2</sup>)</h2>
+    <?php
         function insertionSort(&$array, $n) {
             for ($i = 1; $i < $n; $i++) {
                 $key = $array[$i];
@@ -68,12 +73,15 @@
                 $array[$j + 1] = $key;
             }
         }
+        $arr = [5,3,1,6,8];
+        $n = 5;
+        printArray($arr);
         echo "<br>";
         insertionSort($arr, $n);
-        print_r($arr);
+        printArray($arr);
     ?>
-    <h2>Merge Sort</h2>
-    <?php      
+    <h2>Merge Sort O(n log<sub>2</sub>n)</h2>
+    <?php
         function mergeSort($array, $n) {
             if ($n <= 1) return $array;
             $m = ($n - ($n % 2)) / 2;
@@ -105,19 +113,14 @@
         }
 
         $arr = [10, 5, 13, 5, 4, 65];
-        print_r($arr);
+        printArray($arr);
         echo "<br>";
         $arr = mergeSort($arr, 6);
-        print_r($arr);
+        printArray($arr);
 
     ?>  
-    <h2>Quick Sort</h2>
+    <h2>Quick Sort O(n log<sub>2</sub>n)</h2>
     <?php
-        $arr = [42, 51, 6, 4, 14, 6, 1];
-        $n = 7;
-        
-        print_r($arr);
-        
         function quickSort($array, $n) {
             if ($n <= 1) return $array;
             $pivot = $array[$n - 1];
@@ -138,16 +141,16 @@
             for ($i = 0; $i < $n2; $i++) $newArr[$k++] = $arr2[$i];
             return $newArr;
         }
-        
-        $arr = quickSort($arr, $n);
-        echo "<br>";
-        print_r($arr);
-    ?>
-    <h2>Shell Sort</h2>
-    <?php
-        $array = [61, 5, 4, 123, 67, 4, 1];
-        $n = 7;
 
+        $arr = [42, 51, 6, 4, 14, 6, 1];
+        $n = 7;
+        printArray($arr);
+        echo "<br>";
+        $arr = quickSort($arr, $n);
+        printArray($arr);
+    ?>
+    <h2>Shell Sort O(n log<sub>2</sub>n) ~ O(n<sup>1.25</sup>)</h2>
+    <?php
         function shellSort(&$arr, $n) {
             $gap = $n;
             while ($gap != 1) {
@@ -164,10 +167,12 @@
             }
         }
 
-        print_r($array);
+        $array = [61, 5, 4, 123, 67, 4, 1];
+        $n = 7;
+        printArray($array);
         echo "<br>";
         shellSort($array, $n);
-        print_r($array);
+        printArray($array);
     ?>
 </body>
 </html>
