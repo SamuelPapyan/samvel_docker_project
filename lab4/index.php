@@ -57,7 +57,7 @@
         echo "<br>";
         echo "Number 6 is at index " . binarySearch($array, $n, 6);
     ?>
-    <h2>Binary Search Tree  O(log n)</h2>
+    <h2>Binary Search Tree O(log n)</h2>
     <?php 
         class TreeNode {
             public $value;
@@ -148,7 +148,7 @@
 
         $tree->printTree($tree->findNode(2));
     ?>
-    <h2>Hash Tries O(log n)</h2>
+    <h2>Hash Tries O(k)</h2>
     <?php 
         class Node {
             public $value = NULL;
